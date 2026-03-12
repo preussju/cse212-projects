@@ -11,10 +11,15 @@ public class CustomerService {
         // Test Cases
 
         // Test 1
-        // Scenario: 
-        // Expected Result: 
+        // Scenario: test size of the queue if it is set to default value of 10 if it is set to 0 
+        // Expected Result: queue size = 10 or = 4
         Console.WriteLine("Test 1");
 
+        var cs0 = new CustomerService(0);
+        Console.WriteLine(cs0);
+
+        var cs4 = new CustomerService(4);
+        Console.WriteLine(cs4);
         // Defect(s) Found: 
 
         Console.WriteLine("=================");
@@ -24,6 +29,9 @@ public class CustomerService {
         // Expected Result: 
         Console.WriteLine("Test 2");
 
+        cs4.AddNewCustomer();
+        cs4.AddNewCustomer();
+        Console.WriteLine(cs4);
         // Defect(s) Found: 
 
         Console.WriteLine("=================");
@@ -34,7 +42,8 @@ public class CustomerService {
     private readonly List<Customer> _queue = new();
     private readonly int _maxSize;
 
-    public CustomerService(int maxSize) {
+    public CustomerService(int maxSize) 
+    {
         if (maxSize <= 0)
             _maxSize = 10;
         else
