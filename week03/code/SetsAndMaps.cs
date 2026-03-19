@@ -1,3 +1,4 @@
+using System.Data.Common;
 using System.Text.Json;
 
 public static class SetsAndMaps
@@ -21,8 +22,25 @@ public static class SetsAndMaps
     /// <param name="words">An array of 2-character words (lowercase, no duplicates)</param>
     public static string[] FindPairs(string[] words)
     {
-        // TODO Problem 1 - ADD YOUR CODE HERE
-        return [];
+        // TODO Problem 1
+        var wordsSet = new HashSet<string>(words); //set for the words array 
+        var result = new HashSet<string>(); //set for the final result
+        var pairs = new HashSet<string>(); // set for processed words 
+
+        foreach (var w in words)
+        {
+            if (pairs.Contains(w)) // skips if the reversed word has been processed 
+                continue;
+            var reverse = new string(w.Reverse().ToArray());
+            if (w == reverse) //checks if the letters are the same
+                continue;
+            if (wordsSet.Contains(reverse)) //if the words matches the reversed word, adds to the final result
+            {
+                result.Add($"{w} & {reverse}");
+                pairs.Add(reverse); //process the reversed word 
+            }
+        }
+        return result.ToArray(); //return final result as an array
     }
 
     /// <summary>
@@ -43,8 +61,13 @@ public static class SetsAndMaps
         {
             var fields = line.Split(",");
             // TODO Problem 2 - ADD YOUR CODE HERE
-        }
+            var degree = fields[3]; // gets the degree in line 4 (index 3)
 
+            if (!degrees.ContainsKey(degree)) // if the degree is not in the set, adds it 
+                degrees.Add(degree, 1);
+            else
+                degrees[degree]++; // if the degree is in the set, adds +1 to its value 
+        }
         return degrees;
     }
 
@@ -66,8 +89,34 @@ public static class SetsAndMaps
     /// </summary>
     public static bool IsAnagram(string word1, string word2)
     {
-        // TODO Problem 3 - ADD YOUR CODE HERE
-        return false;
+        // TODO Problem 3 
+        var dict = new Dictionary<char, int>();
+
+        foreach (var w in word1.ToLower()) // loops through the first word,
+        {
+            if (w == ' ') //ignores spaces
+                continue;
+            if (dict.ContainsKey(w)) // if contains the letter it adds +1 to the int 
+                dict[w]++;
+            else
+                dict[w] = 1;
+        }
+
+        foreach (var w in word2.ToLower()) // loops through the second word 
+        {
+            if (w == ' ') //ignores spaces
+                continue;
+            if (!dict.ContainsKey(w)) // if a letter in the second word is not in the dictionary, they are not == 
+                return false;
+            dict[w]--; // if a letter is in the dictionary, it removes -1 from the int
+        }
+
+        foreach (var count in dict.Values) // if any letter has a count that is not 0, then they are not ==
+        {
+            if (count != 0)
+                return false;
+        }
+        return true;
     }
 
     /// <summary>
