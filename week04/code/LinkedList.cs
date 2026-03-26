@@ -33,8 +33,24 @@ public class LinkedList : IEnumerable<int>
     public void InsertTail(int value)
     {
         // TODO Problem 1
+        //Create a new node (we will call it newNode)
+        Node newNode = new(value);
+        // If the list is empty, then point both head and tail to the new node.
+        if (_head is null)
+        {
+            _head = newNode;
+            _tail = newNode;
+        }
+        //Set the "prev" of the new node to the current tail(newNode.Prev = tail)
+        //Set the "next" of the current tail to the new node (tail.Next = newNode)
+        // If the list is not empty, then only tail will be affected.
+        else
+        {
+            newNode.Prev = _tail;
+            _tail.Next = newNode;
+            _tail = newNode;
+        }
     }
-
 
     /// <summary>
     /// Remove the first node (i.e. the head) of the linked list.
@@ -65,6 +81,20 @@ public class LinkedList : IEnumerable<int>
     public void RemoveTail()
     {
         // TODO Problem 2
+        // cover an empty list.  Its okay to set to null again.
+        if (_head == _tail)
+        {
+            _head = null;
+            _tail = null;
+        }
+        // If the list has more than one item in it, then only the tail will e affected 
+        //Set the "next" of the second to last node (tail.Prev) to nothing (tail.Prev.Next = null)
+        //Set the tail to be the second to last node (tail = tail.Prev)
+        else
+        {
+            _tail.Prev!.Next = null;  // null is a legal value !
+            _tail = _tail.Prev;
+        }
     }
 
     /// <summary>
@@ -109,6 +139,36 @@ public class LinkedList : IEnumerable<int>
     public void Remove(int value)
     {
         // TODO Problem 3
+        // search for the node (starting at the head) that contains the value and then remove that one node
+
+        // Search for the node that matches 'value' by starting at the 
+        // head of the list.
+        Node? curr = _head;
+        while (curr is not null)
+        {
+            if (curr.Data == value)
+            {
+                // If the location of 'value' is at the end of the list,
+                // then we can call delete_tail to remove 'new_value'
+                if (curr == _tail)
+                {
+                    RemoveTail();
+                }
+                if (curr == _head)
+                {
+                    RemoveHead();
+                }
+                //Set the prev of the node after current to the node before current (current.Next.Prev = current.Prev)
+                //et the next of the node before current to the node after current(current.Prev.Next = current.Next)
+                else
+                {
+                    curr.Next!.Prev = curr.Prev;
+                    curr.Prev!.Next = curr.Next;
+                }
+                return; // We can exit the function after we delete
+            }
+        }
+
     }
 
     /// <summary>
