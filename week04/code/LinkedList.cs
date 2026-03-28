@@ -154,7 +154,7 @@ public class LinkedList : IEnumerable<int>
                 {
                     RemoveTail();
                 }
-                if (curr == _head)
+                else if (curr == _head)
                 {
                     RemoveHead();
                 }
@@ -167,6 +167,7 @@ public class LinkedList : IEnumerable<int>
                 }
                 return; // We can exit the function after we delete
             }
+            curr = curr.Next; // Go to the next node to search for 'value'
         }
 
     }
@@ -177,6 +178,17 @@ public class LinkedList : IEnumerable<int>
     public void Replace(int oldValue, int newValue)
     {
         // TODO Problem 4
+        //to loop through the linked list and search for all nodes that are equal to oldValue 
+        Node? curr = _head;
+        while (curr is not null)
+        {
+            if (curr.Data == oldValue)
+            {
+                curr.Data = newValue; // replace the value of the node with newValue
+            }
+            curr= curr.Next;
+        }
+
     }
 
     /// <summary>
