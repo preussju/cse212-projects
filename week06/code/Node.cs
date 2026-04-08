@@ -59,6 +59,7 @@ public class Node
     public int GetHeight()
     {
         // TODO Start Problem 4
+        
         return 0; // Replace this line with the correct return statement(s)
     }
 }
